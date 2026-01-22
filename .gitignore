@@ -1,0 +1,29 @@
+# ==== Python ====
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# ==== Virtual Environment ====
+.venv/
+venv/
+env/
+ENV/
+
+# ==== Environment variables ====
+.env
+
+# ==== VS Code ====
+.vscode/
+
+# ==== OS ====
+.DS_Store
+Thumbs.db
+
+# ==== Logs ====
+*.log
+
+# ==== SQLite / local db ====
+*.sqlite3
