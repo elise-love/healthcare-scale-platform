@@ -16,13 +16,16 @@ scale_platform/
 │  ├─ routers/
 │  │  ├─ pages.py           
 │  │  └─ api.py        
-│  ├─ templates/              #Jinja2 HTML
+│  ├─ templates/             
 │  │  ├─ base.html
 │  │  ├─ fill_scale.html
 │  │  └─ history.html
 │  └─ static/               
 │     └─ style.css
-├─ scales/                    #量表定義檔（JSON）
+├─ frontend/                  #React
+│  ├─ src/
+│  └─ package.json
+├─ scales/                    #量表定義（JSON）
 │  └─ example_scale.json
 ├─ tests/
 ├─ .env                      
