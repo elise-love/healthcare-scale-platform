@@ -17,6 +17,7 @@ ENV/
 
 # ==== VS Code ====
 .vscode/
+.vs/
 
 # ==== OS ====
 .DS_Store
@@ -27,3 +28,15 @@ Thumbs.db
 
 # ==== SQLite / local db ====
 *.sqlite3
+
+# Databases
+# SQLite database files
+*.sqlite
+*.sqlite3
+# DuckDB
+*.db
+*.wal
+# Other potential database file extensions (if used with pickle, dbm, etc.)
+*.p
+*.pkl
+*.pickle
