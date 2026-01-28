@@ -1,5 +1,6 @@
 import colors from "tailwindcss/colors";
 
+/** @type {import('tailwindcss').Config} */)}
 export default {
     content: [
         "./index.html",
@@ -8,14 +9,14 @@ export default {
     ],
     theme: {
         colors: {
-            gray: colors.coolGray,
-            blue: colors.lightBlue,
+            gray: colors.slate,
+            blue: colors.sky,
             red: colors.rose,
             pink: colors.fuchsia,
         },
         fontFamily: {
-            sans: ['Graphik', 'sans-serif'],
-            serif: ['Merriweather', 'serif'],
+            sans: ["Graphik", "ui-sans-serif", "system-ui", "sans-serif"],
+            serif: ["Merriweather", "ui-serif", "Georgia", "serif"],
         },
         extend: {
             spacing: {
@@ -24,8 +25,12 @@ export default {
             },
             borderRadius: {
                 '4xl': '2rem',
-            },
-        },
+      },
     },
-    plugins: [],
+  },
+  plugins: [],
 };
+{
+  "css.lint.unknownAtRules": "ignore"
+}
+
