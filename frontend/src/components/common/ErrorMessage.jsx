@@ -8,5 +8,5 @@ const ErrorMessage = ({ message }) => {
         </div >
     );
 };
-
-export default ErrorMessage
+   
+export default ErrorMessage;
