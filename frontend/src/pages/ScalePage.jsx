@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getScale, submitScaleResponses } from '../api/scalesApi.jsx'; 
+//import { getScale, submitScaleResponses } from '../api/scalesApi.jsx'; 
 import ScaleForm from '../components/scale/ScaleForm.jsx'; 
-import Loading from '../components/common/Loaading.jsx';
+import Loading from '../components/common/Loading.jsx';
 import ErrorMessage from '../components/common/ErrorMessage.jsx'; 
 import './ScalePage.css';
 
