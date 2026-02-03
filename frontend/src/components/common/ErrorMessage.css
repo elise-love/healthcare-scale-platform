@@ -1,0 +1,23 @@
+.error-message {
+    background-color: #fee2e2; /* red-100 */
+    border: 1px solid #f87171; /* red-400 */
+    color: #b91c1c; /* red-700 */
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    position: relative;
+}
+
+    .error-message strong {
+        font-weight: bold;
+    }
+
+    .error-message span {
+        display: block;
+    }
+
+@media (min-width: 640px) {
+    .error-message span {
+        display: inline;
+    }
+}
+

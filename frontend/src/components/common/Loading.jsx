@@ -1,9 +1,10 @@
 import React from 'react';
+import './Loading.css';
 
 const Loading = () => {
     return (
-        <div className="flex justify-center items-center min-h-screen">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+        <div className="loading-container">
+            <div className="loading-spinner"></div>
         </div>
     )
 };

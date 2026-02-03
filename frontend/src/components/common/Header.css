@@ -1,0 +1,38 @@
+.header {
+    background-color: #0284c7; /* blue-600 */
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.header-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+    .header-logo:hover {
+        opacity: 0.9;
+    }
+
+.header-nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+    .header-nav a {
+        color: white;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+        .header-nav a:hover {
+            text-decoration: underline;
+        }
