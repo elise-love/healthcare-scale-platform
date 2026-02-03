@@ -12,11 +12,13 @@ import './App.css'
 function App() {
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/scale/:scaleId" element={<ScalePage />} />
-                <Route path="/result" element={<ResultPage />} />
-            </Routes>
+            <Header>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/scale/:scaleId" element={<ScalePage />} />
+                    <Route path="/result" element={<ResultPage />} />
+                </Routes>
+            </Header>
         </BrowserRouter>
     )
 }
