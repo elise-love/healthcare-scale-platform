@@ -1,6 +1,9 @@
+import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom' 
-
+import Header from './components/common/Header.jsx';
 import HomePage from './pages/HomePage.jsx'
+import ScalePage from './pages/ScalePage.jsx'
+import ResultPage from './pages/ResultPage.jsx'
 
 
 import './App.css'
@@ -11,7 +14,8 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<HomePage />} />
-
+                <Route path="/scale/:scaleId" element={<ScalePage />} />
+                <Route path="/result" element={<ResultPage />} />
             </Routes>
         </BrowserRouter>
     )
