@@ -1,7 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from app.models.scale import SubmitAnswersRequest, ScaleResultResponse, Scale
 from app.services.scale_loader import load_scale
+from app.services.assessment_service import save_assessment
 from app.services.scoring import score_scale
+import uuid
 
 router = APIRouter(prefix="/api")
 
@@ -22,9 +24,20 @@ def submit_scale(scale_id: str, body: SubmitAnswersRequest):
 
     total, level = score_scale(scale, body.answers)
 
+    #save result to DB
+    assessment_id = save_assessment(
+        scale_id = scale_id,
+        version = scale.get("version", "1.0"),
+        subject_id  = body.user_id,
+        answers = body.answers,
+        total_score = total,
+        interpretation = level
+    )
+
     #TODO:存DB
     return ScaleResultResponse(
         scale_id=scale_id,
         score=total,
         result=level    
+        assessment_id = assessment_id
     )
