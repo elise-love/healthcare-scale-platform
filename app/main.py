@@ -1,4 +1,4 @@
-#main.py
+#app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -7,10 +7,7 @@ from app.routers.api import router as api_router
 
 app = FastAPI(title = "Healthcare Scale Platform")
 
-@app.on_event("startup")
-def startup():
-    init_db()
-
+#CORS 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -19,10 +16,17 @@ app.add_middleware(
     ],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
-)
+    allow_headers=["*"],    
+    )
 
-@app.get("/api/health")
+#Init DB on startup
+@app.on_event("startup")
+def startup():
+    init_db()
+    init_db()
+
+#root homepage
+@app.get("/")
 def home():
     return {"ok": True}
 
