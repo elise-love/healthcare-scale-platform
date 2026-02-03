@@ -1,0 +1,44 @@
+.scale-question {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-bottom: 1rem;
+}
+
+    .scale-question h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+.question-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.option-label {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+    .option-label:hover {
+        background-color: #f9fafb; /* gray-50 */
+    }
+
+    .option-label input[type="radio"] {
+        margin-right: 0.75rem;
+        width: 1rem;
+        height: 1rem;
+        cursor: pointer;
+    }
+
+    .option-label span {
+        flex: 1;
+    }
