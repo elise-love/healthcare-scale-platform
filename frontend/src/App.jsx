@@ -13,12 +13,12 @@ function App() {
     return (
         <BrowserRouter>
             <Header>
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/scale/:scaleId" element={<ScalePage />} />
-                    <Route path="/result" element={<ResultPage />} />
-                </Routes>
             </Header>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/scale/:scaleId" element={<scales />} />
+                <Route path="/result" element={<ResultPage />} />
+            </Routes>
         </BrowserRouter>
     )
 }
