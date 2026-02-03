@@ -11,7 +11,7 @@ app = FastAPI(title = "Healthcare Scale Platform")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173", #vite
+        "http://localhost:5173", #vite port
         "http://localhost:3000", #CRA 
     ],
     allow_credentials=True,
@@ -22,7 +22,6 @@ app.add_middleware(
 #Init DB on startup
 @app.on_event("startup")
 def startup():
-    init_db()
     init_db()
 
 #root homepage

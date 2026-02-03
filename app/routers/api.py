@@ -38,6 +38,6 @@ def submit_scale(scale_id: str, body: SubmitAnswersRequest):
     return ScaleResultResponse(
         scale_id=scale_id,
         score=total,
-        result=level    
+        result=level,
         assessment_id = assessment_id
     )
