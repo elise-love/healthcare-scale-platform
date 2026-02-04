@@ -1,3 +1,4 @@
+//components\scale\ScaleForm.jsx
 import React, { useState } from 'react';
 import ScaleQuestion from './ScaleQuestion';
 import './ScaleForm.css';
@@ -9,9 +10,16 @@ const ScaleForm = ({ scale, onSubmit }) => {
     const questions = Array.isArray(scale?.questions) ? scale.questions : [];
 
     if (!scale || questions.length === 0) {
+        return <div className="scale-form"><p>加載量表中...</p></div>
+    }
+
+    if (questions.length === 0) {
         return (
             <div className="scale-form">
-                <p>加載量表中...</p>
+                <p>此量表目前沒有任何問題可供回答。</p>
+                <pre style={{ whiteSpace: "pre-wrap" }}>
+                    {JSON.stringify(scale, null, 2)}
+                </pre>
             </div>
         )
     }

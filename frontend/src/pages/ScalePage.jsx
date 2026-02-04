@@ -1,3 +1,4 @@
+//\pages\ScalePage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getScale, submitScaleResponses } from '../services/api.js'; 
@@ -45,16 +46,18 @@ const ScalePage = () => {
     if (!scale) return <ErrorMessage message="量表未找到。" />;//api returns nothign
 
     return (
-        <div className="scalePageContainer"> /* classs control layout*/
+        <div className="scalePageContainer">
+            {/* class controls layout */}
             <div className="scaleHeader">
                 <h1 className="scaleTitle">{scale.name}</h1> 
 
                 {scale.description && (
                     <p className="scaleDescription">{scale.description}</p>
-                )} /*render description if exists*/
+                )}
+                {/*render description if exists*/}
             </div>
 
-            <ScaleForm scale={scale} onSubmit={handleSubmit} /> /*callback when submits*/ */
+            <ScaleForm scale={scale} onSubmit={handleSubmit} /> {/*callback when submits*/}
         </div>
     );
 };

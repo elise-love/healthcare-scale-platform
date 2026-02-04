@@ -1,39 +1,8 @@
 from pydantic import BaseModel
 from typing import Dict, Any, List, Optional
+import logging
 
-class Interpretation(BaseModel):
-    min: int
-    max: int
-    label: str
-
-class Scoring(BaseModel):
-    method: str
-    min: int
-    max: int
-    interpretation: List[Interpretation]
-
-class Option(BaseModel):
-    key: str
-    label: str
-
-class Item(BaseModel):
-    item_id: str
-    order: int
-    text: str
-    reverse: bool
-    weight: float
-
-class Scale(BaseModel):
-    scale_id: str
-    version: str
-    name: str
-    short_name: str
-    language: str
-    timeframe: str
-    scoring: Scoring
-    options: List[Option]
-    items: List[Item]
-    scoring_map: Dict[str, Dict[str, int]]
+logger = logging.getLogger(__name__)
     
 class Interpretation(BaseModel):
     min: int
