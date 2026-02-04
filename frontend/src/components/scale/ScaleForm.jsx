@@ -35,7 +35,7 @@ const ScaleForm = ({ scale, onSubmit }) => {
         e.preventDefault();
 
         // Validate all questions answered
-        const allAnswered = scale.Question.every((q) => answers[q.id] !== undefined);
+        const allAnswered = scale.items.every((q) => answers[q.id] !== undefined);
         if (!allAnswered) {
             alert('尚有問題未作答完畢！請完成後再次提交');
             return;
