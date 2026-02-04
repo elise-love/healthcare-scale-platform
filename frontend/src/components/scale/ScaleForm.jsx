@@ -7,7 +7,7 @@ const ScaleForm = ({ scale, onSubmit }) => {
     const [answers, setAnswers] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const questions = Array.isArray(scale?.questions) ? scale.questions : [];
+    const questions = Array.isArray(scale?.items) ? scale.items : [];
 
     if (!scale || questions.length === 0) {
         return <div className="scale-form"><p>加載量表中...</p></div>
@@ -49,7 +49,7 @@ const ScaleForm = ({ scale, onSubmit }) => {
         }
     };
 
-    const progress = (Object.keys(answers).length / scale.questions.length) * 100;
+    const progress = (Object.keys(answers).length / scale.items.length) * 100;
 
     return (
         <form onSubmit={handleSubmit} className="scale-form">
@@ -64,12 +64,12 @@ const ScaleForm = ({ scale, onSubmit }) => {
 
                 {/* Numeric progress text */}
                 <p className="progress-text">
-                    {Object.keys(answers).length} of {scale.questions.length} answered
+                    {Object.keys(answers).length} of {scale.items.length} answered
                 </p>
             </div>
 
             {/* Questions */}
-            {scale.questions.map((question) => (
+            {scale.items.map((question) => (
                 <ScaleQuestion
                     key={question.id}
                     question={question}
