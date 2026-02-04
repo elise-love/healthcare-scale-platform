@@ -3,24 +3,30 @@ from app.models.scale import SubmitAnswersRequest, ScaleResultResponse, Scale
 from app.services.scale_loader import load_scale
 from app.services.assessment_service import save_assessment
 from app.services.scoring import score_scale
-import uuid
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api")
 
 @router.get("/scales/{scale_id}", response_model=Scale)
 def get_scale(scale_id: str):
+    logger.info(f"GET scale Id : {scale_id}")   
     #取得指定量表
     scale = load_scale(scale_id)
     if not scale:
-        raise HTTPException(404, "scale not found")
+        logger.warning(f"Scale {scale_id} not found")
+        return {"error": "scale not found"}
     return scale
 
 @router.post("/scales/{scale_id}/responses", response_model=ScaleResultResponse)
 def submit_scale(scale_id: str, body: SubmitAnswersRequest):
+    logger.info(f"sumit scale {scale_id}")
     #提交量表回應並計算分數
     scale = load_scale(scale_id)
     if not scale:
-        raise HTTPException(404, "scale not found")
+        logger.warning(f"Scale {scale_id} cannot be loaded")
 
     total, level = score_scale(scale, body.answers)
 
@@ -33,6 +39,7 @@ def submit_scale(scale_id: str, body: SubmitAnswersRequest):
         total_score = total,
         interpretation = level
     )
+    logger.info(f"Assessment saved with ID: {assessment_id}")
 
     #TODO:存DB
     return ScaleResultResponse(
@@ -41,3 +48,4 @@ def submit_scale(scale_id: str, body: SubmitAnswersRequest):
         result=level,
         assessment_id = assessment_id
     )
+    logger.info(f"Scale {scale_id} result saved to DB")
