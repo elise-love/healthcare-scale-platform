@@ -5,7 +5,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.db import init_db
 from app.routers.api import router as api_router
 
+import logging
+
+
 app = FastAPI(title = "Healthcare Scale Platform")
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s - %(name)s - %(message)s",
+)
+
+logger = logging.getLogger(__name__)
 
 #CORS 
 app.add_middleware(
@@ -22,11 +32,14 @@ app.add_middleware(
 #Init DB on startup
 @app.on_event("startup")
 def startup():
+    logger.info("Apllication starting up")
     init_db()
+    logger.info("Database initialized")
 
 #root homepage
 @app.get("/")
 def home():
+    logger.info("Home endpoint accessed")
     return {"ok": True}
 
 app.include_router(api_router)
