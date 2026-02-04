@@ -12,7 +12,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173", #vite port
-        "http://localhost:3000", #CRA 
+        "http://localhost:3002", #CRA 
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -33,3 +33,6 @@ app.include_router(api_router)
 
 #python -m uvicorn app.main:app --reload
 #http://127.0.0.1:8000/
+
+
+#Port change: main.py/ vite.config.js

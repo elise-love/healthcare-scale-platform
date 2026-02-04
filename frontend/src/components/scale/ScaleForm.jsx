@@ -6,6 +6,16 @@ const ScaleForm = ({ scale, onSubmit }) => {
     const [answers, setAnswers] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const questions = Array.isArray(scale?.questions) ? scale.questions : [];
+
+    if (!scale || questions.length === 0) {
+        return (
+            <div className="scale-form">
+                <p>加載量表中...</p>
+            </div>
+        )
+    }
+
     const handleAnswerChange = (questionId, value) => {
         setAnswers((prev) => ({
             ...prev,
