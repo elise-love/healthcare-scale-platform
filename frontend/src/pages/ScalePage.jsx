@@ -9,7 +9,7 @@ import './ScalePage.css';
 const ScalePage = () => {
     const { scaleId } = useParams(); //extracts scaleId from URL
     const navigate = useNavigate(); //function to navigate to other routes
-    const [scale, setScale] = useState(true); //scale stores fetched scale data. null-> not loaded yet
+    const [scale, setScale] = useState(null); //scale stores fetched scale data. null-> not loaded yet
     const [loading, setLoading] = useState(true);//trackes loading state, True when not loaded yet
     const [error, setError] = useState(null);//null-> no error
 
