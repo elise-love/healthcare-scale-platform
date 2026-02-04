@@ -27,7 +27,9 @@ CREATE TABLE IF NOT EXISTS scale_items (
   reverse      INTEGER DEFAULT 0,  -- reverse-scored item (0/1)
   weight       REAL DEFAULT 1.0,   -- 權重
   PRIMARY KEY (scale_id, version, item_id),
-  FOREIGN KEY (scale_id, version) REFERENCES scale_versions(scale_id, version) ON DELETE CASCADE
+  FOREIGN KEY (scale_id, version)
+    REFERENCES scale_versions(scale_id, version)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS scale_options (
@@ -36,7 +38,9 @@ CREATE TABLE IF NOT EXISTS scale_options (
   option_key  TEXT NOT NULL,       -- defines answer options
   label       TEXT NOT NULL,
   PRIMARY KEY (scale_id, version, option_key),
-  FOREIGN KEY (scale_id, version) REFERENCES scale_versions(scale_id, version) ON DELETE CASCADE
+  FOREIGN KEY (scale_id, version)
+    REFERENCES scale_versions(scale_id, version)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS assessments (
@@ -48,7 +52,8 @@ CREATE TABLE IF NOT EXISTS assessments (
   interpretation TEXT,              -- optional clinical interpretation
   answers_json   TEXT NOT NULL,     -- raw answers snapshot
   created_at     TEXT DEFAULT (datetime('now')), -- submission time
-  FOREIGN KEY (scale_id, version) REFERENCES scale_versions(scale_id, version)
+  FOREIGN KEY (scale_id, version)
+    REFERENCES scale_versions(scale_id, version)
 );
 
 CREATE TABLE IF NOT EXISTS assessment_answers (
@@ -57,7 +62,9 @@ CREATE TABLE IF NOT EXISTS assessment_answers (
   answer_value  TEXT NOT NULL,
   score         REAL NOT NULL,
   PRIMARY KEY (assessment_id, item_id),
-  FOREIGN KEY (assessment_id) REFERENCES assessments(assessment_id) ON DELETE CASCADE
+  FOREIGN KEY (assessment_id)
+    REFERENCES assessments(assessment_id)
+    ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS idx_scale_items_order

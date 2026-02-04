@@ -1,26 +1,73 @@
 from pydantic import BaseModel
 from typing import Dict, Any, List, Optional
 
-#量表問題模型
-class ScaleQuestion(BaseModel):
-    id: str
-    text: str
-    options: List[Dict[str, Any]]
-
-#量表等級模型
-class ScaleLevel(BaseModel):
+class Interpretation(BaseModel):
     min: int
     max: int
     label: str
-    description: Optional[str] = None
 
-#量表模型
+class Scoring(BaseModel):
+    method: str
+    min: int
+    max: int
+    interpretation: List[Interpretation]
+
+class Option(BaseModel):
+    key: str
+    label: str
+
+class Item(BaseModel):
+    item_id: str
+    order: int
+    text: str
+    reverse: bool
+    weight: float
+
 class Scale(BaseModel):
-    id: str
+    scale_id: str
+    version: str
     name: str
-    description: Optional[str] = None
-    questions: List[ScaleQuestion]
-    levels: List[ScaleLevel]
+    short_name: str
+    language: str
+    timeframe: str
+    scoring: Scoring
+    options: List[Option]
+    items: List[Item]
+    scoring_map: Dict[str, Dict[str, int]]
+    
+class Interpretation(BaseModel):
+    min: int
+    max: int
+    label: str
+
+class Scoring(BaseModel):
+    method: str
+    min: int
+    max: int
+    interpretation: List[Interpretation]
+
+class Option(BaseModel):
+    key: str
+    label: str
+
+class Item(BaseModel):
+    item_id: str
+    order: int
+    text: str
+    reverse: bool
+    weight: float
+
+class Scale(BaseModel):
+    scale_id: str
+    version: str
+    name: str
+    short_name: str
+    language: str
+    timeframe: str
+    scoring: Scoring
+    options: List[Option]
+    items: List[Item]
+    scoring_map: Dict[str, Dict[str, int]]
 
 #提交答案請求模型
 class SubmitAnswersRequest(BaseModel):

@@ -1,4 +1,4 @@
-import React from 'react';
+ï»¿import React from 'react';
 import { useLocation } from 'react-router-dom';
 //import ResultDisplay from '../components/ResultDisplay/ResultDisplay';
 import ErrorMessage from '../components/common/ErrorMessage';
@@ -9,7 +9,7 @@ const ResultPage = () => {
     const result = location.state?.result;
 
     if (!result) {
-        return <ErrorMessage message="µLªk¨ú±o´úÅçµ²ªG ><" />;
+        return <ErrorMessage message="ç™¼æ”¶éŒ¯èª¤ ><" />;
     }
 
     return (
