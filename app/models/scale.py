@@ -19,7 +19,7 @@ class Option(BaseModel):
     key: str
     label: str
 
-class Item(BaseModel):
+class Question(BaseModel):
     item_id: str
     order: int
     text: str
@@ -35,7 +35,7 @@ class Scale(BaseModel):
     timeframe: str
     scoring: Scoring
     options: List[Option]
-    items: List[Item]
+    items: List[Question]
     scoring_map: Dict[str, Dict[str, int]]
 
 #提交答案請求模型
