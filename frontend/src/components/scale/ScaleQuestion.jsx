@@ -3,27 +3,31 @@ import './ScaleQuestion.css';
 
 const ScaleQuestion = ({ question, options = [], value, onChange }) => {
     const safeOptions = Array.isArray(options) ? options : [];
+    const current = Number(value);
+
     return (
         <div className="scale-question">
             <h3>{question.text}</h3>
 
-            <div className="question-options">
-                {safeOptions.map((opt) => (
-                    <label
-                        key={`${question?.item_id}-${opt.key}`}
-                        className="option-label"
-                    >
+            <div className="question-options" role="group" aria-label={question.text}>
+                {safeOptions.map((opt) => {
+                    const optValue = Number(opt.key);
+                    const checked = Number.isFinite(current) && current === optValue; //isFinite: is num or not
 
-                        <input
-                            type="radio"
-                            name={question?.item_id}
-                            value={opt.key}
-                            checked={value === opt.value}
-                            onChange={(e) => onChange(question.item_id, parseInt(e.target.value, 10))}
-                        />
-                        <span>{opt.label}</span>
-                    </label>
-                ))}
+                    return (
+                        <button
+                            key={`${question.item_id}-${opt.key}`} //ex: gds15_q01-0 / gds15_q01-1
+                            type="button"
+                            className="option-label"
+                            data-checked={checked ? "true" : "false"}
+                            aria-pressed={checked}
+                            onClick={() => onChange(question.item_id, optValue)}
+                        >
+                            <span className="option-text">{opt.label}</span>
+                            {checked && <span className="option-check">✓</span>}
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );
