@@ -18,10 +18,10 @@ const ScaleQuestion = ({ question, options = [], value, onChange }) => {
                             type="radio"
                             name={question?.item_id}
                             value={opt.key}
-                            checked={value === opt .value}
+                            checked={value === opt.value}
                             onChange={(e) => onChange(question.item_id, parseInt(e.target.value, 10))}
                         />
-                        <span>{opt.text}</span>
+                        <span>{opt.label}</span>
                     </label>
                 ))}
             </div>
