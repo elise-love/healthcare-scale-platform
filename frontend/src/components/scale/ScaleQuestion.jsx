@@ -3,7 +3,9 @@ import './ScaleQuestion.css';
 
 const ScaleQuestion = ({ question, options = [], value, onChange }) => {
     const safeOptions = Array.isArray(options) ? options : [];
-    const current = Number(value);
+    const current = value ?? null; //usually yes or no
+
+    console.log('Question:', question.item_id, 'Value:', value, 'Current:', current);
 
     return (
         <div className="scale-question">
@@ -11,8 +13,10 @@ const ScaleQuestion = ({ question, options = [], value, onChange }) => {
 
             <div className="question-options" role="group" aria-label={question.text}>
                 {safeOptions.map((opt) => {
-                    const optValue = Number(opt.key);
-                    const checked = Number.isFinite(current) && current === optValue; //isFinite: is num or not
+                    const optValue = opt.key;
+                    const checked = current === optValue;
+
+                    console.log(`  Option ${opt.key}: optValue=${optValue}, checked=${checked}`);
 
                     return (
                         <button

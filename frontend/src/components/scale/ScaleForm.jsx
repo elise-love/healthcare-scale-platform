@@ -74,7 +74,7 @@ const ScaleForm = ({ scale, onSubmit }) => {
                 <ScaleQuestion
                     key={question.item_id}
                     question={question}
-                    options={options}
+                    options={Array.isArray(question.options) ? question.options: options}
                     value={answers[question.item_id]}
                     onChange={handleAnswerChange}
                 />
