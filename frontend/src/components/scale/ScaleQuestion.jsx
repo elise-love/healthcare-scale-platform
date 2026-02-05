@@ -1,24 +1,27 @@
 import React from 'react';
 import './ScaleQuestion.css';
 
-const ScaleQuestion = ({ question, value, onChange }) => {
+const ScaleQuestion = ({ question, options = [], value, onChange }) => {
+    const safeOptions = Array.isArray(options) ? options : [];
     return (
         <div className="scale-question">
             <h3>{question.text}</h3>
+
             <div className="question-options">
-                {question.options.map((option) => (
+                {safeOptions.map((opt) => (
                     <label
-                        key={option.value}
+                        key={`${question?.item_id}-${opt.key}`}
                         className="option-label"
                     >
+
                         <input
                             type="radio"
-                            name={question.id}
-                            value={option.value}
-                            checked={value === option.value}
-                            onChange={(e) => onChange(question.id, parseInt(e.target.value))}
+                            name={question?.item_id}
+                            value={opt.key}
+                            checked={value === opt .value}
+                            onChange={(e) => onChange(question.item_id, parseInt(e.target.value, 10))}
                         />
-                        <span>{option.text}</span>
+                        <span>{opt.text}</span>
                     </label>
                 ))}
             </div>

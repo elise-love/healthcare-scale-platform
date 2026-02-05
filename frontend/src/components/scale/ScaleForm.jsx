@@ -7,13 +7,14 @@ const ScaleForm = ({ scale, onSubmit }) => {
     const [answers, setAnswers] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const questions = Array.isArray(scale?.items) ? scale.items : [];
+    const items = Array.isArray(scale?.items) ? scale.items : [];
+    const options = Array.isArray(scale?.options) ? scale.options : [];
 
-    if (!scale || questions.length === 0) {
+    if (!scale) {
         return <div className="scale-form"><p>加載量表中...</p></div>
     }
 
-    if (questions.length === 0) {
+    if (items.length === 0) {
         return (
             <div className="scale-form">
                 <p>此量表目前沒有任何問題可供回答。</p>
@@ -24,10 +25,10 @@ const ScaleForm = ({ scale, onSubmit }) => {
         )
     }
 
-    const handleAnswerChange = (questionId, value) => {
+    const handleAnswerChange = (itemId, value) => {
         setAnswers((prev) => ({
             ...prev,
-            [questionId]: value,
+            [itemId]: value,
         }));
     };
 
@@ -35,7 +36,7 @@ const ScaleForm = ({ scale, onSubmit }) => {
         e.preventDefault();
 
         // Validate all questions answered
-        const allAnswered = scale.items.every((q) => answers[q.id] !== undefined);
+        const allAnswered = items.every((q) => answers[q.item_id] !== undefined);
         if (!allAnswered) {
             alert('尚有問題未作答完畢！請完成後再次提交');
             return;
@@ -49,7 +50,7 @@ const ScaleForm = ({ scale, onSubmit }) => {
         }
     };
 
-    const progress = (Object.keys(answers).length / scale.items.length) * 100;
+    const progress = (Object.keys(answers).length / items.length) * 100;
 
     return (
         <form onSubmit={handleSubmit} className="scale-form">
@@ -64,16 +65,17 @@ const ScaleForm = ({ scale, onSubmit }) => {
 
                 {/* Numeric progress text */}
                 <p className="progress-text">
-                    {Object.keys(answers).length} of {scale.items.length} answered
+                    {Object.keys(answers).length} of {items.length} answered
                 </p>
             </div>
 
             {/* Questions */}
-            {scale.items.map((question) => (
+            {items.map((question) => (
                 <ScaleQuestion
-                    key={question.id}
+                    key={question.item_id}
                     question={question}
-                    value={answers[question.id]}
+                    options={options}
+                    value={answers[question.item_id]}
                     onChange={handleAnswerChange}
                 />
             ))}
