@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Union, Literal
 import logging
 
 logger = logging.getLogger(__name__)
@@ -16,37 +16,57 @@ class Scoring(BaseModel):
     interpretation: List[Interpretation]
 
 class Option(BaseModel):
-    key: str
+    key: Union[int, str]
     label: str
+    value: Optional[int] = None
 
 class Item(BaseModel):
     item_id: str
     order: int
     text: str
-    reverse: bool
-    weight: float
+    item_type: Literal["single_choice", "multiple_choice", "text", "numeric"] = "single_choice"
+    reverse: bool = False
+    weight: float = 1.0
+    options: Optional[List[Option]] = None  # Item-specific options
+    min_value: Optional[float] = None
+    max_value: Optional[float] = None
+    required: bool = True
 
 class Scale(BaseModel):
     scale_id: str
     version: str
     name: str
-    short_name: str
-    language: str
-    timeframe: str
+    short_name: Optional[str] = None
+    language: str = "zh-TW"
+    timeframe: Optional[str] = None
     scoring: Scoring
-    options: List[Option]
+    options: Optional[List[Option]] = None  
     items: List[Item]
-    scoring_map: Dict[str, Dict[str, int]]
+    scoring_map: Optional[Dict[str, Dict[str, int]]] = None  # Optional
 
-#提交答案請求模型
+
+# === Submission Models ===
+
+AnswerValue = Union[int, str, List[int], float, None]
+
 class SubmitAnswersRequest(BaseModel):
-    answers: Dict[str, int]  #問題ID -> 分數
+    """
+    Generic answer submission model.
+    
+    Examples:
+      - Single choice: {"gds15_q01": 1}
+      - Multi choice: {"phq9_q09": [1, 3, 5]}
+      - Numeric: {"pain_scale": 7.5}
+      - Text: {"comments": "feeling better"}
+    """
+    answers: Dict[str, AnswerValue]  
     user_id: Optional[str] = None
+    metadata: Optional[Dict[str, Any]] = None
 
-#量表結果回應模型
 class ScaleResultResponse(BaseModel):
     scale_id: str
-    score: int
+    score: float
     result: str
-    assessment_id: str  #評估記錄 ID
+    assessment_id: str  
     message: str = "評估完成"
+    details: Optional[Dict[str, Any]] = None

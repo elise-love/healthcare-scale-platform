@@ -1,4 +1,3 @@
-//\pages\ScalePage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getScale, submitScaleResponses } from '../services/api.js'; 
@@ -14,6 +13,27 @@ const ScalePage = () => {
     const [loading, setLoading] = useState(true);//trackes loading state, True when not loaded yet
     const [error, setError] = useState(null);//null-> no error
 
+    const formatError = (err) => {
+        const detail = err.response?.data?.detail;
+
+        // If it's an array (FastAPI validation errors)
+        if (Array.isArray(detail)) {
+            return detail.map(e => `${e.loc?.join('.')}: ${e.msg}`).join('; ');
+        }
+
+        // If it's an object with errors array
+        if (typeof detail === 'object' && detail?.errors) {
+            return `${detail.message || 'Validation failed'}: ${detail.errors.join(', ')}`;
+        }
+
+        // If it's a string
+        if (typeof detail === 'string') {
+            return detail;
+        }
+
+        // Default fallback
+        return err.message || '發生未知錯誤';
+    };
 
     //fetch data from server
     useEffect(() => {
@@ -22,7 +42,7 @@ const ScalePage = () => {
                 const data = await getScale(scaleId);
                 setScale(data);
             } catch (err) {
-                setError(err.response?.data?.detail || '無法取得量表資料。');
+                setError(formatError(err));
             } finally {
                 setLoading(false);
             }
@@ -36,7 +56,7 @@ const ScalePage = () => {
             const result = await submitScaleResponses(scaleId, answers);
             navigate('/results', { state: { result } });
         } catch (err) {
-            setError(err.response?.data?.detail || '提交失敗！');
+            setError(formatError(err));
         }
     };
 
@@ -47,7 +67,6 @@ const ScalePage = () => {
 
     return (
         <div className="scalePageContainer">
-            {/* class controls layout */}
             <div className="scaleHeader">
                 <h1 className="scaleTitle">{scale.name}</h1> 
 

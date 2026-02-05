@@ -3,9 +3,8 @@ import './ScaleQuestion.css';
 
 const ScaleQuestion = ({ question, options = [], value, onChange }) => {
     const safeOptions = Array.isArray(options) ? options : [];
-    const current = value ?? null; //usually yes or no
-
-    console.log('Question:', question.item_id, 'Value:', value, 'Current:', current);
+    //normalize value
+    const normalizedValue = value !== null && value !== undefined ? String(value) : null;
 
     return (
         <div className="scale-question">
@@ -14,9 +13,9 @@ const ScaleQuestion = ({ question, options = [], value, onChange }) => {
             <div className="question-options" role="group" aria-label={question.text}>
                 {safeOptions.map((opt) => {
                     const optValue = opt.key;
-                    const checked = current === optValue;
+                    const checked = normalizedValue === String(optValue);
 
-                    console.log(`  Option ${opt.key}: optValue=${optValue}, checked=${checked}`);
+                    //console.log(`  Option ${opt.key}: optValue=${optValue}, checked=${checked}`);
 
                     return (
                         <button
@@ -28,7 +27,6 @@ const ScaleQuestion = ({ question, options = [], value, onChange }) => {
                             onClick={() => onChange(question.item_id, optValue)}
                         >
                             <span className="option-text">{opt.label}</span>
-                            {checked && <span className="option-check">✓</span>}
                         </button>
                     );
                 })}

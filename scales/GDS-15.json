@@ -29,11 +29,11 @@
     },
     "options": [
         {
-            "key": "yes",
+            "key": 1,
             "label": "是"
         },
         {
-            "key": "no",
+            "key": 0,
             "label": "否"
         }
     ],
@@ -42,6 +42,7 @@
             "item_id": "gds15_q01",
             "order": 1,
             "text": "基本上，您對您的生活滿意嗎？",
+            "item_type": "single_choice",
             "reverse": true,
             "weight": 1.0
         },
@@ -49,6 +50,7 @@
             "item_id": "gds15_q02",
             "order": 2,
             "text": "您是否減少很多的活動和興趣的事？",
+            "item_type": "single_choice",
             "reverse": false,
             "weight": 1.0
         },
@@ -56,6 +58,7 @@
             "item_id": "gds15_q03",
             "order": 3,
             "text": "您是否覺得您的生活很空虛？",
+            "item_type": "single_choice",
             "reverse": false,
             "weight": 1.0
         },
@@ -63,6 +66,7 @@
             "item_id": "gds15_q04",
             "order": 4,
             "text": "您是否常常感到厭煩？",
+            "item_type": "single_choice",
             "reverse": false,
             "weight": 1.0
         },
@@ -70,6 +74,7 @@
             "item_id": "gds15_q05",
             "order": 5,
             "text": "您是否大部份時間精神都很好？",
+            "item_type": "single_choice",
             "reverse": true,
             "weight": 1.0
         },
@@ -77,6 +82,7 @@
             "item_id": "gds15_q06",
             "order": 6,
             "text": "您是否會常常害怕將有不幸的事情發生在您身上嗎？",
+            "item_type": "single_choice",
             "reverse": false,
             "weight": 1.0
         },
@@ -84,6 +90,7 @@
             "item_id": "gds15_q07",
             "order": 7,
             "text": "您是否大部份的時間都感到快樂？",
+            "item_type": "single_choice",
             "reverse": true,
             "weight": 1.0
         },
@@ -91,6 +98,7 @@
             "item_id": "gds15_q08",
             "order": 8,
             "text": "您是否常常感到無論做什麼事，都沒有用？",
+            "item_type": "single_choice",
             "reverse": false,
             "weight": 1.0
         },
@@ -98,6 +106,7 @@
             "item_id": "gds15_q09",
             "order": 9,
             "text": "您是否比較喜歡待在家裡而較不喜歡外出及不喜歡做新的事？",
+            "item_type": "single_choice",
             "reverse": false,
             "weight": 1.0
         },
@@ -105,6 +114,7 @@
             "item_id": "gds15_q10",
             "order": 10,
             "text": "您是否覺得現在有記憶力不好的困擾？",
+            "item_type": "single_choice",
             "reverse": false,
             "weight": 1.0
         },
@@ -112,6 +122,7 @@
             "item_id": "gds15_q11",
             "order": 11,
             "text": "您是否覺得現在還能活著是很好的事？",
+            "item_type": "single_choice",
             "reverse": true,
             "weight": 1.0
         },
@@ -119,6 +130,7 @@
             "item_id": "gds15_q12",
             "order": 12,
             "text": "您是否覺得您現在活得很沒有價值？",
+            "item_type": "single_choice",
             "reverse": false,
             "weight": 1.0
         },
@@ -126,6 +138,7 @@
             "item_id": "gds15_q13",
             "order": 13,
             "text": "您是否覺得精力很充沛？",
+            "item_type": "single_choice",
             "reverse": true,
             "weight": 1.0
         },
@@ -133,6 +146,7 @@
             "item_id": "gds15_q14",
             "order": 14,
             "text": "您是否覺得您現在的情況是沒有希望的？",
+            "item_type": "single_choice",
             "reverse": false,
             "weight": 1.0
         },
@@ -140,6 +154,7 @@
             "item_id": "gds15_q15",
             "order": 15,
             "text": "您是否覺得大部份的人都比您幸福？",
+            "item_type": "single_choice",
             "reverse": false,
             "weight": 1.0
         }

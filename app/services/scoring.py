@@ -9,12 +9,12 @@ def score_scale(scale: dict, answers: dict) -> tuple[float, str]:
     
     for item in scale.get("items", []):
         item_id = item["item_id"]
-        answer_key = answers.get(item_id)
+        answer_value = answers.get(item_id)
         
-        if not answer_key:
+        if answer_value is None:
             continue
             
-        score_value = 1 if answer_key == "yes" else 0
+        score_value = int(answer_value)
         
         #reverse scoring if needed
         if item.get("reverse", False):
