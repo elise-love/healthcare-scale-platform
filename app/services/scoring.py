@@ -3,7 +3,7 @@ def score_scale(scale: dict, answers: dict) -> tuple[float, str]:
     """
     Args:
         scale: Scale definition from JSON
-        answers: Dict of {item_id: answer_key} (e.g., {"gds15_q01": "yes"})
+        answers: Dict of {item_id: answer_key} (e.g., {"gds15_q01": 1})
     """
     total = 0.0
     
@@ -13,9 +13,14 @@ def score_scale(scale: dict, answers: dict) -> tuple[float, str]:
         
         if answer_value is None:
             continue
-            
-        score_value = int(answer_value)
         
+        # For GDS-15 style scales, the answer is directly the score (0 or 1)
+        # If using options array, we'd map it here
+        score_value = answer_value
+        
+        if not isinstance(score_value, (int, float)):
+            continue
+     
         #reverse scoring if needed
         if item.get("reverse", False):
             score_value = 1 - score_value

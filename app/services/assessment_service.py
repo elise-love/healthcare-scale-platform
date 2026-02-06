@@ -8,7 +8,7 @@ def save_assessment(
     scale_id: str,
     version: str,
     subject_id: str | None,
-    answers: Dict[str, int],
+    answers: Dict[str, Any],
     total_score: float,
     interpretation: str
 ) -> str:
@@ -30,7 +30,17 @@ def save_assessment(
     answers_json = json.dumps(answers, ensure_ascii=False)
     
     with get_db() as conn:
-        # 插入主評估記錄
+
+        conn.execute("""
+            INSERT OR IGNORE INTO scales (scale_id, name)
+            VALUES (?, ?)
+        """, (scale_id, scale_id))
+        
+        conn.execute("""
+            INSERT OR IGNORE INTO scale_versions (scale_id, version, definition_json)
+            VALUES (?, ?, ?)
+        """, (scale_id, version, '{}'))
+        
         conn.execute("""
             INSERT INTO assessments (
                 assessment_id, scale_id, version, subject_id,

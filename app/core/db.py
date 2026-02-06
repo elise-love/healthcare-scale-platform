@@ -18,4 +18,4 @@ def init_db():
     schema = SCHEMA_PATH.read_text(encoding="utf-8") #load schema.sql
     with get_db() as conn:
         conn.executescript(schema)
-        conn.commit
+        conn.commit()

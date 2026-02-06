@@ -15,11 +15,16 @@ export const getScale = async (scaleId) => {
 };
 
 //submit responses
-export const submitScaleResponses = async (scaleId, answers, userId =null) => {
-    const response = await api.post(`/scales/${scaleId}/responses`, {
+export const submitScaleResponses = async (scaleId, answers, userId = null) => {
+    const payload = {
         answers,
         user_id: userId,
-    });
+    };
+
+    console.log("POST payload (json):", JSON.stringify(payload, null, 2));
+    console.log("answers entries:", Object.entries(payload.answers || {}).slice(0, 5));
+
+    const response = await api.post(`/scales/${scaleId}/responses`, payload);
     return response.data;
 };
 

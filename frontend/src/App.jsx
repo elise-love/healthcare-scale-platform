@@ -17,7 +17,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/scales/:scaleId" element={<ScalePage />} />
-                <Route path="/result" element={<ResultPage />} />
+                <Route path="/results" element={<ResultPage />} />
             </Routes>
         </BrowserRouter>
     )

@@ -1,11 +1,11 @@
 ﻿import React from 'react';
 import { useLocation } from 'react-router-dom';
-//import ResultDisplay from '../components/ResultDisplay/ResultDisplay';
+import ResultDisplay from '../components/scale/ResultDisplay';
 import ErrorMessage from '../components/common/ErrorMessage';
 import './ResultPage.css';
 
 const ResultPage = () => {
-    const Location = useLocation();
+    const location = useLocation();
     const result = location.state?.result;
 
     if (!result) {
@@ -13,7 +13,7 @@ const ResultPage = () => {
     }
 
     return (
-        <div className="resultPageConstainer">
+        <div className="resultPageContainer">
             <ResultDisplay result={result} />
         </div>
     );
