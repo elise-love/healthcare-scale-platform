@@ -1,6 +1,10 @@
 import os
 from pathlib import Path
 import pyodbc
+from dotenv import load_dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+load_dotenv(BASE_DIR / ".env")
 
 SCHEMA_MSSQL_PATH = Path(__file__).resolve().parent / "schema_mssql.sql"
 
@@ -30,6 +34,6 @@ def init_db():
     schema = SCHEMA_MSSQL_PATH.read_text(encoding="utf-8")
     with get_db() as conn:
         cur = conn.cursor()
-        # schema_mssql.sql 沒用 GO，所以可以直接 execute
+        #schema_mssql.sql 沒用 GO，所以可以直接 execute
         cur.execute(schema)
         conn.commit()
