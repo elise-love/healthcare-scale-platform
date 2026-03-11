@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Cookie
 from app.models.scale import SubmitAnswersRequest, ScaleResultResponse, Scale
 from app.services.scale_loader import load_scale
 from app.services.assessment_service import save_assessment
 from app.services.scoring import score_scale
+from app.routers.auth import _decode_jwt
 import logging
 
 logger = logging.getLogger(__name__)
@@ -19,7 +20,13 @@ def get_scale(scale_id: str):
     return scale
 
 @router.post("/scales/{scale_id}/responses", response_model=ScaleResultResponse)
-def submit_scale(scale_id: str, body: SubmitAnswersRequest):
+def submit_scale(scale_id: str, body: SubmitAnswersRequest, access_token: str | None = Cookie(default=None)):
+    # Require authentication
+    if not access_token:
+        raise HTTPException(status_code=401, detail="請先登入再提交評估")
+    payload = _decode_jwt(access_token)
+    current_user_id = payload["sub"]
+
     logger.info(f"sumit scale {scale_id}")
     #load scale
     scale = load_scale(scale_id)
@@ -39,11 +46,11 @@ def submit_scale(scale_id: str, body: SubmitAnswersRequest):
     # Calculate score
     total, level = score_scale(scale, body.answers)
 
-    #save result to DB
+    #save result to DB (use authenticated user_id, not body.user_id)
     assessment_id = save_assessment(
         scale_id = scale_id,
         version = scale.get("version", "1.0"),
-        subject_id  = body.user_id,
+        subject_id  = current_user_id,
         answers = body.answers,
         total_score = total,
         interpretation = level

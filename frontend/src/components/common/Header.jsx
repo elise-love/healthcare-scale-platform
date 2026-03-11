@@ -13,6 +13,7 @@ const Header = () => {
                     <Link to="/">首頁 ꕤ</Link>
                     <Link to="/scales">量表列表 ☰</Link>
                     <Link to="/login">登入 ✉</Link>
+                    <Link to="/register">註冊 ✎</Link>
                     <Link to="/history">查看歷史紀錄 ✎</Link>
                     <Link to="/about">關於我們 ❤</Link>
                 </nav>
