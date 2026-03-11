@@ -1,21 +1,35 @@
-import sqlite3
+import os
 from pathlib import Path
+import pyodbc
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-DB_PATH = BASE_DIR / "app.db"
-SCHEMA_PATH = Path(__file__).resolve().parent / "schema.sql"
+SCHEMA_MSSQL_PATH = Path(__file__).resolve().parent / "schema_mssql.sql"
 
-#create database connection
+def get_mssql_connection_string() -> str:
+    cs = os.getenv("MSSQL_CONNECTION_STRING")
+    if not cs:
+        raise RuntimeError(
+            "Missing MSSQL_CONNECTION_STRING. Example: "
+            "Driver={ODBC Driver 18 for SQL Server};"
+            "Server=65-0464700-01\\\\SQLEXPRESS;"
+            "Database=healthcare_scale;"
+            "Trusted_Connection=yes;"
+            "TrustServerCertificate=yes;"
+        )
+    return cs
+
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA foreign_keys = ON;") #activate foreign key 
+    conn = pyodbc.connect(get_mssql_connection_string())
+    conn.autocommit = False
     return conn
 
-
-#initialize databse with schema
 def init_db():
-    schema = SCHEMA_PATH.read_text(encoding="utf-8") #load schema.sql
+    init_flag = os.getenv("DB_INIT", "true").lower() in ("1", "true", "yes", "y", "on")
+    if not init_flag:
+        return
+
+    schema = SCHEMA_MSSQL_PATH.read_text(encoding="utf-8")
     with get_db() as conn:
-        conn.executescript(schema)
+        cur = conn.cursor()
+        # schema_mssql.sql 沒用 GO，所以可以直接 execute
+        cur.execute(schema)
         conn.commit()
