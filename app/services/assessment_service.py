@@ -1,9 +1,10 @@
 import json
-import uuid
+import uuid #create unique id for each assessment
 from typing import Dict, Any
 from app.core.db import get_db
 
 def _ensure_scale_and_version(conn, scale_id: str, version: str) -> None:
+    #make sure scale exists
     conn.execute("""
         IF NOT EXISTS (SELECT 1 FROM dbo.scales WHERE scale_id = ?)
         BEGIN
@@ -11,6 +12,7 @@ def _ensure_scale_and_version(conn, scale_id: str, version: str) -> None:
         END
     """, (scale_id, scale_id, scale_id))
 
+    #make sure scale_verson exists
     conn.execute("""
         IF NOT EXISTS (SELECT 1 FROM dbo.scale_versions WHERE scale_id = ? AND version = ?)
         BEGIN
@@ -27,10 +29,12 @@ def save_assessment(
     total_score: float,
     interpretation: str
 ) -> str:
-    assessment_id = str(uuid.uuid4())
-    answers_json = json.dumps(answers, ensure_ascii=False)
+    assessment_id = str(uuid.uuid4()) #create a UUID as primary key
+    answers_json = json.dumps(answers, ensure_ascii=False) #turn answers to JSON
 
+    #connect DB
     with get_db() as conn:
+        #make sure scale/ version exits
         _ensure_scale_and_version(conn, scale_id, version)
 
         conn.execute("""
@@ -43,6 +47,7 @@ def save_assessment(
             total_score, interpretation, answers_json
         ))
 
+        #write answer's key value into answer sheet one by one
         for item_id, score in answers.items():
             conn.execute("""
                 INSERT INTO dbo.assessment_answers (
@@ -50,6 +55,7 @@ def save_assessment(
                 ) VALUES (?, ?, ?, ?)
             """, (assessment_id, item_id, str(score), score))
 
+        #commit to DB
         conn.commit()
 
     return assessment_id
