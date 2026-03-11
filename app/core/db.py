@@ -1,39 +1,44 @@
 import os
 from pathlib import Path
 import pyodbc
-from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-load_dotenv(BASE_DIR / ".env")
+BASE_DIR = Path(__file__).resolve().parent.parent
+MSSQL_SCHEMA_PATH = Path(__file__).resolve().parent / "schema_mssql.sql"
 
-SCHEMA_MSSQL_PATH = Path(__file__).resolve().parent / "schema_mssql.sql"
 
-def get_mssql_connection_string() -> str:
-    cs = os.getenv("MSSQL_CONNECTION_STRING")
-    if not cs:
-        raise RuntimeError(
-            "Missing MSSQL_CONNECTION_STRING. Example: "
-            "Driver={ODBC Driver 18 for SQL Server};"
-            "Server=65-0464700-01\\\\SQLEXPRESS;"
-            "Database=healthcare_scale;"
-            "Trusted_Connection=yes;"
-            "TrustServerCertificate=yes;"
-        )
-    return cs
+def get_conn() -> pyodbc.Connection:
+    conn_str = os.getenv("MSSQL_CONNECTION_STRING")
+    if not conn_str:
+        raise RuntimeError("MSSQL_CONNECTION_STRING is not set")
+    # autocommit False so we can commit explicitly
+    return pyodbc.connect(conn_str, autocommit=False)
 
-def get_db():
-    conn = pyodbc.connect(get_mssql_connection_string())
-    conn.autocommit = False
-    return conn
 
-def init_db():
-    init_flag = os.getenv("DB_INIT", "true").lower() in ("1", "true", "yes", "y", "on")
-    if not init_flag:
+def _run_schema(conn: pyodbc.Connection) -> None:
+    # Split on GO batches (basic splitter)
+    sql = MSSQL_SCHEMA_PATH.read_text(encoding="utf-8")
+    batches = []
+    current = []
+    for line in sql.splitlines():
+        if line.strip().upper() == "GO":
+            if current:
+                batches.append("\n".join(current))
+                current = []
+        else:
+            current.append(line)
+    if current:
+        batches.append("\n".join(current))
+
+    cur = conn.cursor()
+    for batch in batches:
+        if batch.strip():
+            cur.execute(batch)
+    conn.commit()
+
+
+def init_db() -> None:
+    db_init = os.getenv("DB_INIT", "false").lower() == "true"
+    if not db_init:
         return
-
-    schema = SCHEMA_MSSQL_PATH.read_text(encoding="utf-8")
-    with get_db() as conn:
-        cur = conn.cursor()
-        #schema_mssql.sql 沒用 GO，所以可以直接 execute
-        cur.execute(schema)
-        conn.commit()
+    with get_conn() as conn:
+        _run_schema(conn)

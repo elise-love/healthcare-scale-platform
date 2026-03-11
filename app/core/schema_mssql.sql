@@ -1,5 +1,33 @@
 -- SQL Server schema for Healthcare Scale Platform (idempotent)
 
+-- USERS (for login/auth)
+IF OBJECT_ID(N'dbo.users', N'U') IS NULL
+BEGIN
+  CREATE TABLE dbo.users (
+    user_id       UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    email         NVARCHAR(255) NOT NULL UNIQUE,
+    password_hash NVARCHAR(255) NOT NULL,
+    created_at    DATETIME2 NOT NULL CONSTRAINT DF_users_created_at DEFAULT SYSUTCDATETIME()
+  );
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'idx_users_email' AND object_id = OBJECT_ID('dbo.users'))
+  CREATE INDEX idx_users_email ON dbo.users(email);
+
+-- USERS (for register/login)
+IF OBJECT_ID(N'dbo.users', N'U') IS NULL
+BEGIN
+  CREATE TABLE dbo.users (
+    user_id       UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    email         NVARCHAR(255) NOT NULL UNIQUE,
+    password_hash NVARCHAR(255) NOT NULL,
+    created_at    DATETIME2 NOT NULL CONSTRAINT DF_users_created_at DEFAULT SYSUTCDATETIME()
+  );
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'idx_users_email' AND object_id = OBJECT_ID('dbo.users'))
+  CREATE INDEX idx_users_email ON dbo.users(email);
+
 --create table if scale doesn't exist
 IF OBJECT_ID(N'dbo.scales', N'U') IS NULL
 BEGIN
@@ -65,7 +93,7 @@ BEGIN
     assessment_id  UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
     scale_id       NVARCHAR(255) NOT NULL,
     version        NVARCHAR(50)  NOT NULL,
-    subject_id     NVARCHAR(255) NULL,
+    subject_id UNIQUEIDENTIFIER NULL,
     total_score    FLOAT         NOT NULL, --total score
     interpretation NVARCHAR(MAX) NULL, --interpretation of the score, from the original chart
     answers_json   NVARCHAR(MAX) NOT NULL, --save as json

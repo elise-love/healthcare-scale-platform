@@ -10,3 +10,8 @@ pyodbc==5.2.0
 
 # CORS & Middleware
 python-multipart==0.0.12
+
+pyodbc
+passlib[bcrypt]
+python-jose[cryptography]
+python-dotenv

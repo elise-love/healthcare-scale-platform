@@ -1,12 +1,13 @@
-from fastapi import APIRouter, HTTPException
 from app.models.scale import SubmitAnswersRequest, ScaleResultResponse, Scale
 from app.services.scale_loader import load_scale
 from app.services.assessment_service import save_assessment
 from app.services.scoring import score_scale
+from fastapi import APIRouter, HTTPException, Request
+from app.core.auth import AUTH_COOKIE_NAME, get_user_id_from_token
 import logging
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/api")
+router = APIRouter(prefix="/scales")
 
 @router.get("/scales/{scale_id}", response_model=Scale)
 def get_scale(scale_id: str):
@@ -19,13 +20,22 @@ def get_scale(scale_id: str):
     return scale
 
 @router.post("/scales/{scale_id}/responses", response_model=ScaleResultResponse)
-def submit_scale(scale_id: str, body: SubmitAnswersRequest):
-    logger.info(f"sumit scale {scale_id}")
-    #load scale
+def submit_scale(scale_id: str, body: SubmitAnswersRequest, request: Request):
+
+    #load scale definition
     scale = load_scale(scale_id)
     if not scale:
-        logger.warning(f"Scale {scale_id} cannot be loaded")
         raise HTTPException(status_code=404, detail=f"Scale '{scale_id}' not found")
+
+    #auth check
+    token = request.cookies.get(AUTH_COOKIE_NAME)
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    user_id = get_user_id_from_token(token)
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
 
     #validate and normalize answers
     required_items = {item["item_id"] for item in scale.get("items", []) if item.get("required", True)}
@@ -41,14 +51,16 @@ def submit_scale(scale_id: str, body: SubmitAnswersRequest):
 
     #save result to DB
     assessment_id = save_assessment(
-        scale_id = scale_id,
-        version = scale.get("version", "1.0"),
-        subject_id  = body.user_id,
-        answers = body.answers,
-        total_score = total,
-        interpretation = level
+        scale_id=scale_id,
+        version=scale.get("version", "1.0"),
+        subject_id=user_id,          # <- enforce authenticated user
+        answers=body.answers,
+        total_score=total,
+        interpretation=level,
     )
     logger.info(f"Assessment saved with ID: {assessment_id}")
+
+    logger.info(f"Scale {scale_id} result saved to DB")
 
     return ScaleResultResponse(
         scale_id=scale_id,
@@ -56,4 +68,3 @@ def submit_scale(scale_id: str, body: SubmitAnswersRequest):
         result=level,
         assessment_id = assessment_id
     )
-    logger.info(f"Scale {scale_id} result saved to DB")
