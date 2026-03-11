@@ -27,7 +27,7 @@ def submit_scale(scale_id: str, body: SubmitAnswersRequest, access_token: str | 
     payload = _decode_jwt(access_token)
     current_user_id = payload["sub"]
 
-    logger.info(f"sumit scale {scale_id}")
+    logger.info(f"submit scale {scale_id}")
     #load scale
     scale = load_scale(scale_id)
     if not scale:

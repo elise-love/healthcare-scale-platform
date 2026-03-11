@@ -29,12 +29,23 @@ const VerifyEmailPage = () => {
         }
     };
 
-    // Auto-verify if token is in URL
+    // Auto-verify if token is in URL query param
     useEffect(() => {
-        if (searchParams.get('token')) {
-            handleVerify();
-        }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+        const urlToken = searchParams.get('token');
+        if (!urlToken) return;
+        setToken(urlToken);
+        setStatus('loading');
+        verifyEmail(urlToken)
+            .then((data) => {
+                setStatus('success');
+                setMessage(data.message);
+            })
+            .catch((err) => {
+                setStatus('error');
+                const detail = err.response?.data?.detail;
+                setMessage(typeof detail === 'string' ? detail : '驗證失敗，請確認 Token 是否正確');
+            });
+    }, [searchParams]);
 
     return (
         <div className="auth-container">

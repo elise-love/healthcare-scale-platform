@@ -35,8 +35,8 @@ class LoginRequest(BaseModel):
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
 def _make_jwt(user_id: str, email: str) -> str:
-    expire = datetime.now(timezone.utc) + timedelta(minutes=config.JWT_EXPIRE_MINUTES)
-    payload = {"sub": user_id, "email": email, "exp": expire}
+    expire_at = datetime.now(timezone.utc) + timedelta(minutes=config.JWT_EXPIRE_MINUTES)
+    payload = {"sub": user_id, "email": email, "exp": expire_at}
     return jwt.encode(payload, config.JWT_SECRET, algorithm=config.JWT_ALGORITHM)
 
 
