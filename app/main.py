@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.db import init_db
 from app.routers.api import router as api_router
+from app.routers.auth import router as auth_router
 
 import logging
 
@@ -43,6 +44,7 @@ def home():
     return {"ok": True}
 
 app.include_router(api_router)
+app.include_router(auth_router)
 
 #python -m uvicorn app.main:app --reload
 #http://127.0.0.1:8000/
